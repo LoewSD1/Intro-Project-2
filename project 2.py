@@ -55,14 +55,18 @@ def updateComputer(compImg, compCard):
     thingsToReturn = [compImg, compCard]
     return thingsToReturn
 
-def updateScore(compCard, playCard, compScore, playerScore):
-    if(compCard.value>playCard.value):
-        compScore += 1
-    elif(compCard.value < playCard.value):
-        playerScore += 1
-    else :
-        return 0
-    
+def war(compImg, compCard, playImg, playCard):
+    for x in range (0,4):
+        playCard = playerCards.pop()
+        compCard = computerCards.pop()
+
+    playImg = pygame.image.load(playCard.card)
+    compImg = pygame.image.load(compCard.card)
+
+    thingsToReturn =[playImg, compImg, playCard, compCard]
+
+    return thingsToReturn
+
 #create a list of all of the cards
 allCards = [Card("2c.png"),Card("2d.png"),Card("2h.png"),Card("2s.png"),Card("3c.png"),Card("3d.png"),Card("3h.png"),Card("3s.png"),Card("4c.png"),Card("4d.png"),Card("4h.png"),Card("4s.png"),Card("5c.png"),Card("5d.png"),Card("5h.png"),Card("5s.png"),Card("6c.png"),Card("6d.png"),Card("6h.png"),Card("6s.png"),Card("7c.png"),Card("7d.png"),Card("7h.png"),Card("7s.png"),Card("8c.png"),Card("8d.png"),Card("8h.png"),Card("8s.png"),Card("9c.png"),Card("9d.png"),Card("9h.png"),Card("9s.png"),Card("10c.png"),Card("10d.png"),Card("10h.png"),Card("10s.png"),Card("jc.png"),Card("jd.png"),Card("jh.png"),Card("js.png"),Card("qc.png"),Card("qd.png"),Card("qh.png"),Card("qs.png"),Card("kc.png"),Card("kd.png"),Card("kh.png"),Card("ks.png"),Card("ac.png"),Card("ad.png"),Card("ah.png"),Card("as.png")]
 random.shuffle(allCards)
@@ -91,7 +95,7 @@ mouse_Clicked = False
 #initialize pygame
 pygame.init()
 
-displaySurf = pygame.display.set_mode((600, 500))
+displaySurf = pygame.display.set_mode((600, 600))
 
 pygame.display.set_caption('Card War')
 
@@ -150,21 +154,49 @@ while True:
 
     #check to see if a click has occured. If so, display cards
     if clicked != 0:
-        displaySurf.blit(playerImg, (150, 215))
-        displaySurf.blit(computerImg, (400, 215))
+        displaySurf.blit(playerImg, (225, 215))
+        displaySurf.blit(computerImg, (325, 215))
 
     if event.type == pygame.MOUSEBUTTONDOWN:
         if(isMouseDown == 0):
+            #covers up any cards that were displayed during a war.
+            pygame.draw.rect(displaySurf,green,(225,285,175,300))
+            #returns a list of items: playerImg, playerCard, in that order
             playerList = updatePlayer(playerImg, playerCard)
             playerImg = playerList[0]
             playerCard = playerList[1]
+
+            #returns a list of items: computerImg, compCard, in that order
             computerList = updateComputer(computerImg, compCard)
             computerImg =  computerList[0]
             compCard = computerList[1]
+
             if(compCard.value > playerCard.value):
                 compScore += 1
             elif(compCard.value < playerCard.value):
                 playerScore += 1
+            elif (compCard.value == playerCard.value):
+                #returns a list of playImg, compImg, playCard, compCard: in that order
+                #I know this is really bad, but I want to pass things by reference and Python wasn't made that way :'(
+                returnedList = war(computerImg, compCard, playerImg, playerCard)
+                warPlayerImg = returnedList[0]
+                warComputerImg = returnedList[1]
+                playerCard = returnedList[2]
+                compCard = returnedList[3]
+
+                incrementer = 60
+                for x in range (0,3):
+                    displaySurf.blit(card_backImg, (225, 225+incrementer))
+                    displaySurf.blit(card_backImg, (325, 225+incrementer))
+                    incrementer += 60
+
+                displaySurf.blit(warPlayerImg, (225, 225+incrementer))
+                displaySurf.blit(warComputerImg, (325, 225+incrementer))
+
+                if(compCard.value > playerCard.value):
+                    compScore += 6
+                elif(compCard.value < playerCard.value):
+                    playerScore += 6
 
         isMouseDown = 1
         clicked = 1
