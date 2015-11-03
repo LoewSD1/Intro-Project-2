@@ -62,7 +62,7 @@ def updateScore(compCard, playCard, compScore, playerScore):
         playerScore += 1
     else :
         return 0
-
+    
 #create a list of all of the cards
 allCards = [Card("2c.png"),Card("2d.png"),Card("2h.png"),Card("2s.png"),Card("3c.png"),Card("3d.png"),Card("3h.png"),Card("3s.png"),Card("4c.png"),Card("4d.png"),Card("4h.png"),Card("4s.png"),Card("5c.png"),Card("5d.png"),Card("5h.png"),Card("5s.png"),Card("6c.png"),Card("6d.png"),Card("6h.png"),Card("6s.png"),Card("7c.png"),Card("7d.png"),Card("7h.png"),Card("7s.png"),Card("8c.png"),Card("8d.png"),Card("8h.png"),Card("8s.png"),Card("9c.png"),Card("9d.png"),Card("9h.png"),Card("9s.png"),Card("10c.png"),Card("10d.png"),Card("10h.png"),Card("10s.png"),Card("jc.png"),Card("jd.png"),Card("jh.png"),Card("js.png"),Card("qc.png"),Card("qd.png"),Card("qh.png"),Card("qs.png"),Card("kc.png"),Card("kd.png"),Card("kh.png"),Card("ks.png"),Card("ac.png"),Card("ad.png"),Card("ah.png"),Card("as.png")]
 random.shuffle(allCards)
@@ -108,18 +108,6 @@ textRect = textSurf.get_rect()
 textRect.center = (300, 115)
 displaySurf.blit(textSurf, textRect)
 
-fontObj2 = pygame.font.SysFont('times', 12)
-textSurf2 = fontObj2.render('Player Score: ' + str(playerScore), True, black, green)
-textRect2 = textSurf2.get_rect()
-textRect2.center = (200, 200)
-displaySurf.blit(textSurf2, textRect2)
-
-fontObj3 = pygame.font.SysFont('times', 12)
-textSurf3 = fontObj3.render('Computer Score: ' + str(compScore), True, black, green)
-textRect3 = textSurf3.get_rect()
-textRect3.center = (400, 200)
-displaySurf.blit(textSurf3, textRect3)
-
 clicked = 0
 
 #playerImg = pygame.image.load(playerCards.pop().card)
@@ -143,7 +131,19 @@ while True:
            pygame.quit()
            sys.exit()   #use only inside pygame
         #if event.type == MOUSEBUTTONUP:
-         #   mouse_Clicked = True
+         #   mouse_Clicked = TruefontObj2 = pygame.font.SysFont('times', 12)
+    fontObj2 = pygame.font.SysFont('times', 12)
+    textSurf2 = fontObj2.render('Player Score: ' + str(playerScore), True, black, green)
+    textRect2 = textSurf2.get_rect()
+    textRect2.center = (200, 200)
+    displaySurf.blit(textSurf2, textRect2)
+
+    fontObj3 = pygame.font.SysFont('times', 12)
+    textSurf3 = fontObj3.render('Computer Score: ' + str(compScore), True, black, green)
+    textRect3 = textSurf3.get_rect()
+    textRect3.center = (400, 200)
+    displaySurf.blit(textSurf3, textRect3)
+    
     displaySurf.blit(swordsImg, (250, 50))
     displaySurf.blit(card_backImg, (400, 215))
     displaySurf.blit(card_backImg, (150, 215))
@@ -171,7 +171,6 @@ while True:
 
     if event.type == pygame.MOUSEBUTTONUP:
         isMouseDown = 0
-
         
     pygame.display.update()
 
