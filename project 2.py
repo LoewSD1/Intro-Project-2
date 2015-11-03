@@ -198,7 +198,6 @@ while True:
                         displaySurf.blit(warPlayerImg, (225, 225+incrementer))
                         displaySurf.blit(warComputerImg, (325, 225+incrementer))
 
-                        #adding a comment
                         if(compCard.value > playerCard.value):
                             compScore += 6
                         elif(compCard.value < playerCard.value):
