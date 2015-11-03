@@ -6,6 +6,12 @@ import pygame, random, sys
 import string
 from pygame.locals import *
 
+#make the card class
+class Card:
+    def __init__(self, card):
+        self.card = card
+        self.value = checkValue(card)
+
 #determines value of the card. 
 def checkValue(card):
     if(str(card)[0] == '2'):
@@ -26,7 +32,7 @@ def checkValue(card):
         return 7
     elif(str(card)[0] == '9'):
         return 8
-    elif(str(card)[0] == '10'):
+    elif(str(card)[0] == '1'):
         return 9
     elif(str(card)[0] == 'j'):
         return 10
@@ -37,27 +43,25 @@ def checkValue(card):
     elif(str(card)[0] == 'a'):
         return 13
 
-def updateGame(playImg, compImg, playScore, compScore):
-    #get the card objects
+def updatePlayer(playImg, playCard):
     playCard = playerCards.pop()
-    compCard = computerCards.pop()
-    #load the image
-    assert isinstance(playCard.card, object)
     playImg = pygame.image.load(playCard.card)
+    thingsToReturn = [playImg, playCard]
+    return thingsToReturn
+
+def updateComputer(compImg, compCard):
+    compCard = computerCards.pop()
     compImg = pygame.image.load(compCard.card)
-    #determine points
-    if(compCard.value > playCard.value):
+    thingsToReturn = [compImg, compCard]
+    return thingsToReturn
+
+def updateScore(compCard, playCard, compScore, playerScore):
+    if(compCard.value>playCard.value):
         compScore += 1
-    elif playCard.value > compCard.value :
-        playScore += 1
+    elif(compCard.value < playCard.value):
+        playerScore += 1
     else :
         return 0
-
-#make the card class
-class Card:
-    def __init__(self, card):
-        self.card = card
-        self.value = checkValue(card)
 
 #create a list of all of the cards
 allCards = [Card("2c.png"),Card("2d.png"),Card("2h.png"),Card("2s.png"),Card("3c.png"),Card("3d.png"),Card("3h.png"),Card("3s.png"),Card("4c.png"),Card("4d.png"),Card("4h.png"),Card("4s.png"),Card("5c.png"),Card("5d.png"),Card("5h.png"),Card("5s.png"),Card("6c.png"),Card("6d.png"),Card("6h.png"),Card("6s.png"),Card("7c.png"),Card("7d.png"),Card("7h.png"),Card("7s.png"),Card("8c.png"),Card("8d.png"),Card("8h.png"),Card("8s.png"),Card("9c.png"),Card("9d.png"),Card("9h.png"),Card("9s.png"),Card("10c.png"),Card("10d.png"),Card("10h.png"),Card("10s.png"),Card("jc.png"),Card("jd.png"),Card("jh.png"),Card("js.png"),Card("qc.png"),Card("qd.png"),Card("qh.png"),Card("qs.png"),Card("kc.png"),Card("kd.png"),Card("kh.png"),Card("ks.png"),Card("ac.png"),Card("ad.png"),Card("ah.png"),Card("as.png")]
@@ -123,6 +127,12 @@ clicked = 0
 playerImg = "a"
 computerImg = "b"
 
+compCard = Card
+playerCard = Card
+
+#variable to make sure we only register 1 click
+isMouseDown = 0
+
 #refresh the screen
 pygame.display.update()
 
@@ -143,9 +153,24 @@ while True:
         displaySurf.blit(playerImg, (150, 215))
         displaySurf.blit(computerImg, (400, 215))
 
-    if event.type == pygame.MOUSEBUTTONUP:
-        updateGame(playerImg, computerImg, playerScore, compScore)
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        if(isMouseDown == 0):
+            playerList = updatePlayer(playerImg, playerCard)
+            playerImg = playerList[0]
+            playerCard = playerList[1]
+            computerList = updateComputer(computerImg, compCard)
+            computerImg =  computerList[0]
+            compCard = computerList[1]
+            if(compCard.value > playerCard.value):
+                compScore += 1
+            elif(compCard.value < playerCard.value):
+                playerScore += 1
+
+        isMouseDown = 1
         clicked = 1
+
+    if event.type == pygame.MOUSEBUTTONUP:
+        isMouseDown = 0
 
         
     pygame.display.update()
