@@ -2,7 +2,7 @@
 # Seth Loew and Zared Hollabaugh 
 
 #import the necessary libraries
-import pygame, random, sys
+import pygame, random, sys, time
 import string
 from pygame.locals import *
 
@@ -55,18 +55,48 @@ def updateComputer(compImg, compCard):
     thingsToReturn = [compImg, compCard]
     return thingsToReturn
 
-def war(compImg, compCard, playImg, playCard):
-    for x in range (0,4):
-        playCard = playerCards.pop()
-        compCard = computerCards.pop()
+def updateScore(compCard, playCard, compScore, playerScore):
+    if(compCard.value>playCard.value):
+        compScore += 1
+    elif(compCard.value < playCard.value):
+        playerScore += 1
+    else :
+        return 0
 
-    playImg = pygame.image.load(playCard.card)
-    compImg = pygame.image.load(compCard.card)
+def gameOver():
+    pygame.draw.rect(displaySurf, white, (48, 48, 500, 400))
+    fontObj4 = pygame.font.SysFont('times', 35)
+    textSurf4 = fontObj4.render('Game Over', True, black, white)
+    textRect4 = textSurf4.get_rect()
+    textRect4.center = (300, 200)
+    displaySurf.blit(textSurf4, textRect4)
+    if(playerScore > compScore):
+        fontObj5 = pygame.font.SysFont('times', 35)
+        textSurf5 = fontObj5.render('You Won!!!', True, black, white)
+        textRect5 = textSurf5.get_rect()
+        textRect5.center = (300, 250)
+        displaySurf.blit(textSurf5, textRect5)
+    elif(playerScore < compScore):
+        fontObj6 = pygame.font.SysFont('times', 35)
+        textSurf6 = fontObj6.render('Sorry, Computer won :(', True, black, white)
+        textRect6 = textSurf6.get_rect()
+        textRect6.center = (300, 250)
+        displaySurf.blit(textSurf6, textRect6)
+    else:
+        fontObj7 = pygame.font.SysFont('times', 35)
+        textSurf7 = fontObj7.render('It was a tie', True, black, white)
+        textRect7 = textSurf7.get_rect()
+        textRect7.center = (300, 250)
+        displaySurf.blit(textSurf7, textRect7)
+    fontObj8 = pygame.font.SysFont('times', 35)
+    textSurf8 = fontObj8.render('Click here to play again', True, black, white)
+    textRect8 = textSurf8.get_rect()
+    textRect8.center = (300, 300)
+    displaySurf.blit(textSurf8, textRect8)
+    pygame.display.update()
+    time.sleep(1)
 
-    thingsToReturn =[playImg, compImg, playCard, compCard]
-
-    return thingsToReturn
-
+    
 #create a list of all of the cards
 allCards = [Card("2c.png"),Card("2d.png"),Card("2h.png"),Card("2s.png"),Card("3c.png"),Card("3d.png"),Card("3h.png"),Card("3s.png"),Card("4c.png"),Card("4d.png"),Card("4h.png"),Card("4s.png"),Card("5c.png"),Card("5d.png"),Card("5h.png"),Card("5s.png"),Card("6c.png"),Card("6d.png"),Card("6h.png"),Card("6s.png"),Card("7c.png"),Card("7d.png"),Card("7h.png"),Card("7s.png"),Card("8c.png"),Card("8d.png"),Card("8h.png"),Card("8s.png"),Card("9c.png"),Card("9d.png"),Card("9h.png"),Card("9s.png"),Card("10c.png"),Card("10d.png"),Card("10h.png"),Card("10s.png"),Card("jc.png"),Card("jd.png"),Card("jh.png"),Card("js.png"),Card("qc.png"),Card("qd.png"),Card("qh.png"),Card("qs.png"),Card("kc.png"),Card("kd.png"),Card("kh.png"),Card("ks.png"),Card("ac.png"),Card("ad.png"),Card("ah.png"),Card("as.png")]
 random.shuffle(allCards)
@@ -86,16 +116,20 @@ black = (0,0,0)
 orange = (255, 128, 0)
 green = (34,139,34)
 brown = (136, 69, 19)
+white = (255, 255, 255)
 
 #variables (opp_score is the your score and comp_score is my score)
 playerScore= 0
 compScore = 0
 mouse_Clicked = False
+round_Counter = 0
+gameComplete = False
+drawRectangle = False
 
 #initialize pygame
 pygame.init()
 
-displaySurf = pygame.display.set_mode((600, 600))
+displaySurf = pygame.display.set_mode((600, 500))
 
 pygame.display.set_caption('Card War')
 
@@ -105,14 +139,6 @@ card_backImg = pygame.image.load('back.png')
 
 displaySurf.fill(green)
 
-#make the text
-fontObj = pygame.font.SysFont('elephant', 32)
-textSurf = fontObj.render('Card              War', True, brown, green)
-textRect = textSurf.get_rect()
-textRect.center = (300, 115)
-displaySurf.blit(textSurf, textRect)
-
-#bool to see if we have ever clicked on the screen. Used for displaying the player cards
 clicked = 0
 
 #playerImg = pygame.image.load(playerCards.pop().card)
@@ -120,7 +146,6 @@ clicked = 0
 playerImg = "a"
 computerImg = "b"
 
-#initialize two card objects
 compCard = Card
 playerCard = Card
 
@@ -132,11 +157,23 @@ pygame.display.update()
 
 #game loop (means this will never become false and will always run
 while True:
+    if(gameComplete) == False and drawRectangle == True:
+        pygame.draw.rect(displaySurf, green, (48, 48, 500, 400))
+        drawRectangle = False
+
     for event in pygame.event.get():
         if event.type == QUIT:
            pygame.quit()
            sys.exit()   #use only inside pygame
-
+        #if event.type == MOUSEBUTTONUP:
+         #   mouse_Clicked = TruefontObj2 = pygame.font.SysFont('times', 12)
+    #make the text
+    fontObj = pygame.font.SysFont('elephant', 32)
+    textSurf = fontObj.render('Card              War', True, brown, green)
+    textRect = textSurf.get_rect()
+    textRect.center = (300, 115)
+    displaySurf.blit(textSurf, textRect)
+    
     fontObj2 = pygame.font.SysFont('times', 12)
     textSurf2 = fontObj2.render('Player Score: ' + str(playerScore), True, black, green)
     textRect2 = textSurf2.get_rect()
@@ -155,62 +192,59 @@ while True:
 
     #check to see if a click has occured. If so, display cards
     if clicked != 0:
-        displaySurf.blit(playerImg, (225, 215))
-        displaySurf.blit(computerImg, (325, 215))
+        displaySurf.blit(playerImg, (150, 215))
+        displaySurf.blit(computerImg, (400, 215))
 
-    #finds if the users has clicked
     if event.type == pygame.MOUSEBUTTONDOWN:
-        #makes sure we don't do this extremely fast
         if(isMouseDown == 0):
-            #covers up any cards that were displayed during a war.
-            pygame.draw.rect(displaySurf,green,(225,285,175,300))
-            #returns a list of items: playerImg, playerCard, in that order
-            if(roundCounter < 26):
+            round_Counter += 1
+            if round_Counter == 26:
+                gameComplete = True
+                gameOver()
+                round_Counter = 0
+            else:
                 playerList = updatePlayer(playerImg, playerCard)
                 playerImg = playerList[0]
                 playerCard = playerList[1]
-
-                #returns a list of items: computerImg, compCard, in that order
                 computerList = updateComputer(computerImg, compCard)
                 computerImg =  computerList[0]
                 compCard = computerList[1]
-
                 if(compCard.value > playerCard.value):
                     compScore += 1
                 elif(compCard.value < playerCard.value):
                     playerScore += 1
-                elif (compCard.value == playerCard.value):
-                    if(roundCounter < 22):
-                        #returns a list of playImg, compImg, playCard, compCard: in that order
-                        #I know this is really bad, but I want to pass things by reference and Python wasn't made that way :'(
-                        returnedList = war(computerImg, compCard, playerImg, playerCard)
-                        warPlayerImg = returnedList[0]
-                        warComputerImg = returnedList[1]
-                        playerCard = returnedList[2]
-                        compCard = returnedList[3]
 
-                        incrementer = 60
-                        for x in range (0,3):
-                            displaySurf.blit(card_backImg, (225, 225+incrementer))
-                            displaySurf.blit(card_backImg, (325, 225+incrementer))
-                            incrementer += 60
-
-                        displaySurf.blit(warPlayerImg, (225, 225+incrementer))
-                        displaySurf.blit(warComputerImg, (325, 225+incrementer))
-
-                        if(compCard.value > playerCard.value):
-                            compScore += 6
-                        elif(compCard.value < playerCard.value):
-                            playerScore += 6
-        #flag letting the if statement know to only perform once
         isMouseDown = 1
-        #let's us know that we've clicked at least once.
         clicked = 1
-
-    #reset the mouse down flag
+    
     if event.type == pygame.MOUSEBUTTONUP:
         isMouseDown = 0
+
+    if gameComplete == True:
+        print("in function")
+        if event.type == pygame.MOUSEBUTTONUP:
+             #create a list of all of the cards
+            allCards = [Card("2c.png"),Card("2d.png"),Card("2h.png"),Card("2s.png"),Card("3c.png"),Card("3d.png"),Card("3h.png"),Card("3s.png"),Card("4c.png"),Card("4d.png"),Card("4h.png"),Card("4s.png"),Card("5c.png"),Card("5d.png"),Card("5h.png"),Card("5s.png"),Card("6c.png"),Card("6d.png"),Card("6h.png"),Card("6s.png"),Card("7c.png"),Card("7d.png"),Card("7h.png"),Card("7s.png"),Card("8c.png"),Card("8d.png"),Card("8h.png"),Card("8s.png"),Card("9c.png"),Card("9d.png"),Card("9h.png"),Card("9s.png"),Card("10c.png"),Card("10d.png"),Card("10h.png"),Card("10s.png"),Card("jc.png"),Card("jd.png"),Card("jh.png"),Card("js.png"),Card("qc.png"),Card("qd.png"),Card("qh.png"),Card("qs.png"),Card("kc.png"),Card("kd.png"),Card("kh.png"),Card("ks.png"),Card("ac.png"),Card("ad.png"),Card("ah.png"),Card("as.png")]
+            random.shuffle(allCards)
+
+            drawRectangle = True
+
+            clicked = 0
+            
+            compScore = 0
+            playerScore = 0
+
+            #create a list of cards for the computer
+            del computerCards
+            computerCards = []
         
+            for x in range (0,25):
+                computerCards.append(allCards[x])
+            #create a list of cards for the player
+            playerCards = []
+            for x in range(26,51):
+                playerCards.append(allCards[x])
+            gameComplete = False
     pygame.display.update()
 
 
