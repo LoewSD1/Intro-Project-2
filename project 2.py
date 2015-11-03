@@ -112,6 +112,7 @@ textRect = textSurf.get_rect()
 textRect.center = (300, 115)
 displaySurf.blit(textSurf, textRect)
 
+#bool to see if we have ever clicked on the screen. Used for displaying the player cards
 clicked = 0
 
 #playerImg = pygame.image.load(playerCards.pop().card)
@@ -119,6 +120,7 @@ clicked = 0
 playerImg = "a"
 computerImg = "b"
 
+#initialize two card objects
 compCard = Card
 playerCard = Card
 
@@ -134,8 +136,7 @@ while True:
         if event.type == QUIT:
            pygame.quit()
            sys.exit()   #use only inside pygame
-        #if event.type == MOUSEBUTTONUP:
-         #   mouse_Clicked = TruefontObj2 = pygame.font.SysFont('times', 12)
+
     fontObj2 = pygame.font.SysFont('times', 12)
     textSurf2 = fontObj2.render('Player Score: ' + str(playerScore), True, black, green)
     textRect2 = textSurf2.get_rect()
@@ -157,7 +158,9 @@ while True:
         displaySurf.blit(playerImg, (225, 215))
         displaySurf.blit(computerImg, (325, 215))
 
+    #finds if the users has clicked
     if event.type == pygame.MOUSEBUTTONDOWN:
+        #makes sure we don't do this extremely fast
         if(isMouseDown == 0):
             #covers up any cards that were displayed during a war.
             pygame.draw.rect(displaySurf,green,(225,285,175,300))
@@ -197,10 +200,12 @@ while True:
                     compScore += 6
                 elif(compCard.value < playerCard.value):
                     playerScore += 6
-
+        #flag letting the if statement know to only perform once
         isMouseDown = 1
+        #let's us know that we've clicked at least once. 
         clicked = 1
 
+    #reset the mouse down flag
     if event.type == pygame.MOUSEBUTTONUP:
         isMouseDown = 0
         
