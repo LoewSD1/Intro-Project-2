@@ -165,44 +165,46 @@ while True:
             #covers up any cards that were displayed during a war.
             pygame.draw.rect(displaySurf,green,(225,285,175,300))
             #returns a list of items: playerImg, playerCard, in that order
-            playerList = updatePlayer(playerImg, playerCard)
-            playerImg = playerList[0]
-            playerCard = playerList[1]
+            if(roundCounter < 26):
+                playerList = updatePlayer(playerImg, playerCard)
+                playerImg = playerList[0]
+                playerCard = playerList[1]
 
-            #returns a list of items: computerImg, compCard, in that order
-            computerList = updateComputer(computerImg, compCard)
-            computerImg =  computerList[0]
-            compCard = computerList[1]
-
-            if(compCard.value > playerCard.value):
-                compScore += 1
-            elif(compCard.value < playerCard.value):
-                playerScore += 1
-            elif (compCard.value == playerCard.value):
-                #returns a list of playImg, compImg, playCard, compCard: in that order
-                #I know this is really bad, but I want to pass things by reference and Python wasn't made that way :'(
-                returnedList = war(computerImg, compCard, playerImg, playerCard)
-                warPlayerImg = returnedList[0]
-                warComputerImg = returnedList[1]
-                playerCard = returnedList[2]
-                compCard = returnedList[3]
-
-                incrementer = 60
-                for x in range (0,3):
-                    displaySurf.blit(card_backImg, (225, 225+incrementer))
-                    displaySurf.blit(card_backImg, (325, 225+incrementer))
-                    incrementer += 60
-
-                displaySurf.blit(warPlayerImg, (225, 225+incrementer))
-                displaySurf.blit(warComputerImg, (325, 225+incrementer))
+                #returns a list of items: computerImg, compCard, in that order
+                computerList = updateComputer(computerImg, compCard)
+                computerImg =  computerList[0]
+                compCard = computerList[1]
 
                 if(compCard.value > playerCard.value):
-                    compScore += 6
+                    compScore += 1
                 elif(compCard.value < playerCard.value):
-                    playerScore += 6
+                    playerScore += 1
+                elif (compCard.value == playerCard.value):
+                    if(roundCounter < 22):
+                        #returns a list of playImg, compImg, playCard, compCard: in that order
+                        #I know this is really bad, but I want to pass things by reference and Python wasn't made that way :'(
+                        returnedList = war(computerImg, compCard, playerImg, playerCard)
+                        warPlayerImg = returnedList[0]
+                        warComputerImg = returnedList[1]
+                        playerCard = returnedList[2]
+                        compCard = returnedList[3]
+
+                        incrementer = 60
+                        for x in range (0,3):
+                            displaySurf.blit(card_backImg, (225, 225+incrementer))
+                            displaySurf.blit(card_backImg, (325, 225+incrementer))
+                            incrementer += 60
+
+                        displaySurf.blit(warPlayerImg, (225, 225+incrementer))
+                        displaySurf.blit(warComputerImg, (325, 225+incrementer))
+
+                        if(compCard.value > playerCard.value):
+                            compScore += 6
+                        elif(compCard.value < playerCard.value):
+                            playerScore += 6
         #flag letting the if statement know to only perform once
         isMouseDown = 1
-        #let's us know that we've clicked at least once. 
+        #let's us know that we've clicked at least once.
         clicked = 1
 
     #reset the mouse down flag
