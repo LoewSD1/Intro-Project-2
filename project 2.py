@@ -170,32 +170,34 @@ while True:
         #if event.type == MOUSEBUTTONUP:
          #   mouse_Clicked = TruefontObj2 = pygame.font.SysFont('times', 12)
     #make the text
-    fontObj = pygame.font.SysFont('elephant', 32)
-    textSurf = fontObj.render('Card              War', True, brown, green)
-    textRect = textSurf.get_rect()
-    textRect.center = (300, 115)
-    displaySurf.blit(textSurf, textRect)
-    
-    fontObj2 = pygame.font.SysFont('times', 12)
-    textSurf2 = fontObj2.render('Player Score: ' + str(playerScore), True, black, green)
-    textRect2 = textSurf2.get_rect()
-    textRect2.center = (200, 200)
-    displaySurf.blit(textSurf2, textRect2)
 
-    fontObj3 = pygame.font.SysFont('times', 12)
-    textSurf3 = fontObj3.render('Computer Score: ' + str(compScore), True, black, green)
-    textRect3 = textSurf3.get_rect()
-    textRect3.center = (400, 200)
-    displaySurf.blit(textSurf3, textRect3)
-    
-    displaySurf.blit(swordsImg, (250, 50))
-    displaySurf.blit(card_backImg, (400, 215))
-    displaySurf.blit(card_backImg, (150, 215))
+    if gameComplete == False:
+        fontObj = pygame.font.SysFont('elephant', 32)
+        textSurf = fontObj.render('Card              War', True, brown, green)
+        textRect = textSurf.get_rect()
+        textRect.center = (300, 115)
+        displaySurf.blit(textSurf, textRect)
 
-    #check to see if a click has occured. If so, display cards
-    if clicked != 0:
-        displaySurf.blit(playerImg, (225, 215))
-        displaySurf.blit(computerImg, (325, 215))
+        fontObj2 = pygame.font.SysFont('times', 12)
+        textSurf2 = fontObj2.render('Player Score: ' + str(playerScore), True, black, green)
+        textRect2 = textSurf2.get_rect()
+        textRect2.center = (200, 200)
+        displaySurf.blit(textSurf2, textRect2)
+
+        fontObj3 = pygame.font.SysFont('times', 12)
+        textSurf3 = fontObj3.render('Computer Score: ' + str(compScore), True, black, green)
+        textRect3 = textSurf3.get_rect()
+        textRect3.center = (400, 200)
+        displaySurf.blit(textSurf3, textRect3)
+
+        displaySurf.blit(swordsImg, (250, 50))
+        displaySurf.blit(card_backImg, (400, 215))
+        displaySurf.blit(card_backImg, (150, 215))
+
+        #check to see if a click has occured. If so, display cards
+        if clicked != 0:
+            displaySurf.blit(playerImg, (225, 215))
+            displaySurf.blit(computerImg, (325, 215))
 
     if event.type == pygame.MOUSEBUTTONDOWN:
         #covers up any cards that were displayed during a war.
