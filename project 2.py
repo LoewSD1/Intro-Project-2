@@ -98,8 +98,6 @@ def gameOver():
     textRect8.center = (300, 300)
     displaySurf.blit(textSurf8, textRect8)
     pygame.display.update()
-    time.sleep(1)
-
     
 #create a list of all of the cards
 allCards = [Card("2c.png"),Card("2d.png"),Card("2h.png"),Card("2s.png"),Card("3c.png"),Card("3d.png"),Card("3h.png"),Card("3s.png"),Card("4c.png"),Card("4d.png"),Card("4h.png"),Card("4s.png"),Card("5c.png"),Card("5d.png"),Card("5h.png"),Card("5s.png"),Card("6c.png"),Card("6d.png"),Card("6h.png"),Card("6s.png"),Card("7c.png"),Card("7d.png"),Card("7h.png"),Card("7s.png"),Card("8c.png"),Card("8d.png"),Card("8h.png"),Card("8s.png"),Card("9c.png"),Card("9d.png"),Card("9h.png"),Card("9s.png"),Card("10c.png"),Card("10d.png"),Card("10h.png"),Card("10s.png"),Card("jc.png"),Card("jd.png"),Card("jh.png"),Card("js.png"),Card("qc.png"),Card("qd.png"),Card("qh.png"),Card("qs.png"),Card("kc.png"),Card("kd.png"),Card("kh.png"),Card("ks.png"),Card("ac.png"),Card("ad.png"),Card("ah.png"),Card("as.png")]
@@ -247,39 +245,65 @@ while True:
                         elif(compCard.value < playerCard.value):
                             playerScore += 6
                         pygame.display.update()
+                        
+                if gameComplete == True:
+                     #create a list of all of the cards
+                    allCards = [Card("2c.png"),Card("2d.png"),Card("2h.png"),Card("2s.png"),Card("3c.png"),Card("3d.png"),Card("3h.png"),Card("3s.png"),Card("4c.png"),Card("4d.png"),Card("4h.png"),Card("4s.png"),Card("5c.png"),Card("5d.png"),Card("5h.png"),Card("5s.png"),Card("6c.png"),Card("6d.png"),Card("6h.png"),Card("6s.png"),Card("7c.png"),Card("7d.png"),Card("7h.png"),Card("7s.png"),Card("8c.png"),Card("8d.png"),Card("8h.png"),Card("8s.png"),Card("9c.png"),Card("9d.png"),Card("9h.png"),Card("9s.png"),Card("10c.png"),Card("10d.png"),Card("10h.png"),Card("10s.png"),Card("jc.png"),Card("jd.png"),Card("jh.png"),Card("js.png"),Card("qc.png"),Card("qd.png"),Card("qh.png"),Card("qs.png"),Card("kc.png"),Card("kd.png"),Card("kh.png"),Card("ks.png"),Card("ac.png"),Card("ad.png"),Card("ah.png"),Card("as.png")]
+                    random.shuffle(allCards)
 
+                    drawRectangle = True
+
+                    clicked = 0
+                    
+                    compScore = 0
+                    playerScore = 0
+
+                    #create a list of cards for the computer
+                    del computerCards
+                    computerCards = []
+                
+                    for x in range (0,25):
+                        computerCards.append(allCards[x])
+                    #create a list of cards for the player
+                    playerCards = []
+                    for x in range(26,51):
+                        playerCards.append(allCards[x])
+                    gameComplete = False
+                    pygame.display.update()
+        
         isMouseDown = 1
         clicked = 1
 
     if event.type == pygame.MOUSEBUTTONUP:
         isMouseDown = 0
 
-    if gameComplete == True:
-
-        if event.type == pygame.MOUSEBUTTONUP and isMouseDown == 0:
-            print("in function")
-             #create a list of all of the cards
-            allCards = [Card("2c.png"),Card("2d.png"),Card("2h.png"),Card("2s.png"),Card("3c.png"),Card("3d.png"),Card("3h.png"),Card("3s.png"),Card("4c.png"),Card("4d.png"),Card("4h.png"),Card("4s.png"),Card("5c.png"),Card("5d.png"),Card("5h.png"),Card("5s.png"),Card("6c.png"),Card("6d.png"),Card("6h.png"),Card("6s.png"),Card("7c.png"),Card("7d.png"),Card("7h.png"),Card("7s.png"),Card("8c.png"),Card("8d.png"),Card("8h.png"),Card("8s.png"),Card("9c.png"),Card("9d.png"),Card("9h.png"),Card("9s.png"),Card("10c.png"),Card("10d.png"),Card("10h.png"),Card("10s.png"),Card("jc.png"),Card("jd.png"),Card("jh.png"),Card("js.png"),Card("qc.png"),Card("qd.png"),Card("qh.png"),Card("qs.png"),Card("kc.png"),Card("kd.png"),Card("kh.png"),Card("ks.png"),Card("ac.png"),Card("ad.png"),Card("ah.png"),Card("as.png")]
-            random.shuffle(allCards)
-
-            drawRectangle = True
-
-            clicked = 0
+##    if gameComplete == True:
+##
+##        if event.type == pygame.MOUSEBUTTONUP and isMouseDown == 0:
+##            print("in function")
+##             #create a list of all of the cards
+##            allCards = [Card("2c.png"),Card("2d.png"),Card("2h.png"),Card("2s.png"),Card("3c.png"),Card("3d.png"),Card("3h.png"),Card("3s.png"),Card("4c.png"),Card("4d.png"),Card("4h.png"),Card("4s.png"),Card("5c.png"),Card("5d.png"),Card("5h.png"),Card("5s.png"),Card("6c.png"),Card("6d.png"),Card("6h.png"),Card("6s.png"),Card("7c.png"),Card("7d.png"),Card("7h.png"),Card("7s.png"),Card("8c.png"),Card("8d.png"),Card("8h.png"),Card("8s.png"),Card("9c.png"),Card("9d.png"),Card("9h.png"),Card("9s.png"),Card("10c.png"),Card("10d.png"),Card("10h.png"),Card("10s.png"),Card("jc.png"),Card("jd.png"),Card("jh.png"),Card("js.png"),Card("qc.png"),Card("qd.png"),Card("qh.png"),Card("qs.png"),Card("kc.png"),Card("kd.png"),Card("kh.png"),Card("ks.png"),Card("ac.png"),Card("ad.png"),Card("ah.png"),Card("as.png")]
+##            random.shuffle(allCards)
+##
+##            drawRectangle = True
+##
+##            clicked = 0
+##            
+##            compScore = 0
+##            playerScore = 0
+##
+##            #create a list of cards for the computer
+##            del computerCards
+##            computerCards = []
+##        
+##            for x in range (0,25):
+##                computerCards.append(allCards[x])
+##            #create a list of cards for the player
+##            playerCards = []
+##            for x in range(26,51):
+##                playerCards.append(allCards[x])
+##            gameComplete = False
             
-            compScore = 0
-            playerScore = 0
-
-            #create a list of cards for the computer
-            del computerCards
-            computerCards = []
-        
-            for x in range (0,25):
-                computerCards.append(allCards[x])
-            #create a list of cards for the player
-            playerCards = []
-            for x in range(26,51):
-                playerCards.append(allCards[x])
-            gameComplete = False
     pygame.display.update()
 
 
